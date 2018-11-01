@@ -1,0 +1,5 @@
+services:
+  splitenable_event_subscriber:
+    class: Drupal\cde_base\EventSubscriber\SplitEnableSubscriber
+    tags:
+    - {name: event_subscriber}

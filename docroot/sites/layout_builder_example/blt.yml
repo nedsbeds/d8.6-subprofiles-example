@@ -1,0 +1,12 @@
+project:
+  local:
+    hostname: local.layout_builder_example.com
+    protocol: http
+  machine_name: layout_builder_example
+  human_name: layout_builder_example
+  profile:
+    name: 'cde_panelizer'
+drush:
+  aliases:
+    local: layout_builder_example.local
+    remote: 'layout_builder_example.local'

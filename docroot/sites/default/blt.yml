@@ -1,0 +1,9 @@
+project:
+  local:
+    hostname: local.content-display-examples.com
+    protocol: http
+  machine_name: content-display-examples
+drush:
+  aliases:
+    local: self
+    remote: content-display-examples.test

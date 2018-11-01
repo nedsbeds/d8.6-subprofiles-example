@@ -1,0 +1,5 @@
+local:
+  root: /var/www/content-display-examples/docroot
+  uri: 'http://local.layout_builder_example.com'
+  host: local.layout_builder_example.com
+  user: vagrant

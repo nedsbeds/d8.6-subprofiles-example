@@ -1,0 +1,16 @@
+uuid: cca7c592-66e3-449b-b753-3f00f6963e4d
+langcode: en
+status: false
+dependencies: {  }
+id: cde_panelizer
+label: cde_panelizer
+description: ''
+folder: ../config/profiles/cde_panelizer
+module: {  }
+theme: {  }
+blacklist: {  }
+graylist:
+  - core.extension
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 0

@@ -1,0 +1,11 @@
+name: cde_layout_builder
+type: profile
+description: 'Content Display Example Layout Builder Profile'
+core: '8.x'
+distribution:
+  name: CDE
+base profile: cde_base
+#excluded_dependencies:
+themes:
+  - seven
+dependencies:

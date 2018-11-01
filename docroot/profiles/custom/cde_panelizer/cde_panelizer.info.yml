@@ -1,0 +1,12 @@
+name: cde_panelizer
+type: profile
+description: 'Content Display Example Panelizer Profile'
+core: '8.x'
+distribution:
+  name: CDE
+base profile: cde_base
+#excluded_dependencies:
+themes:
+  - seven
+dependencies:
+  - panelizer

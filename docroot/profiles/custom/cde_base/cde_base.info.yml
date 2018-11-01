@@ -1,0 +1,26 @@
+name: cde_base
+type: profile
+description: 'Content Display Example Base Profile'
+core: '8.x'
+distribution:
+  name: CDE
+base profile: lightning
+exclude_dependencies:
+  - contextual
+  - quickedit
+  - lightning_api
+  - lightning_layout
+  - lightning_contact_form
+  - lightning_page
+  - lightning_roles
+  - lightning_search
+  - lightning_landing_page
+  - lightning_layout
+  - lightning_media_instagram
+  - lightning_media_twitter
+  - lightning_scheduled_updates
+  - lightning_workflow
+themes:
+  - seven
+dependencies:
+  - profile_config_overrider

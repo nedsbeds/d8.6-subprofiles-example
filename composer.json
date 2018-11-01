@@ -5,9 +5,13 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "acquia/blt": "^9.2.0"
+        "acquia/blt": "^9.2.0",
+        "drupal/config_ignore": "^2.1",
+        "drupal/panelizer": "^4.1"
     },
-    "require-dev": {},
+    "require-dev": {
+        "geerlingguy/drupal-vm": "^4.8"
+    },
     "config": {
         "sort-packages": true
     },

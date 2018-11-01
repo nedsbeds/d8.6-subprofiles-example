@@ -1,0 +1,4 @@
+#ddev-generated: Automatically generated ddev .gitignore.
+
+/settings.ddev.php
+/ddev_drush_settings.php

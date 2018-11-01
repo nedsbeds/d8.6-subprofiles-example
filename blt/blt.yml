@@ -1,12 +1,9 @@
 project:
-  machine_name: content-display-examples
   prefix: BLT
   human_name: 'BLTed 8'
   profile:
-    name: lightning
-  local:
-    protocol: http
-    hostname: 'local.${project.machine_name}.com'
+    name: 'cde_panelizer'
+  local: {  }
 git:
   default_branch: master
   remotes: {  }
@@ -14,8 +11,6 @@ deploy:
   tag_source: true
 drush:
   aliases:
-    remote: '${project.machine_name}.test'
-    local: self
     ci: self
   default_alias: '${drush.aliases.local}'
 modules:
@@ -34,3 +29,11 @@ modules:
   prod:
     enable: [acquia_connector, shield]
     uninstall: [devel, views_ui]
+multisites:
+  - default
+  - layout_builder_example
+cm:
+  strategy: config-split
+allow-overrides: true
+features:
+  no-overrides: false

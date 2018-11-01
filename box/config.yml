@@ -1,0 +1,92 @@
+vagrant_hostname: local.content-display-examples.com
+vagrant_machine_name: content-display-examples
+vagrant_ip: 192.168.165.94
+vagrant_box: geerlingguy/ubuntu1604
+workspace: /root
+drupal_site_name: 'BLTed 8'
+vagrant_synced_folders:
+    -
+        local_path: .
+        destination: /var/www/content-display-examples
+        type: nfs
+drupal_build_composer_project: false
+drupal_build_composer: false
+drupal_composer_path: false
+drupal_composer_install_dir: /var/www/content-display-examples
+drupal_core_path: /var/www/content-display-examples/docroot
+ssh_home: /var/www/content-display-examples
+apache_vhosts:
+    -
+        servername: '{{ drupal_domain }}'
+        serveralias: 'www.{{ drupal_domain }}'
+        documentroot: '{{ drupal_core_path }}'
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+    -
+        servername: 'dashboard.{{ drupal_domain }}'
+        serveralias: 'www.dashboard.{{ drupal_domain }}'
+        documentroot: /var/www/dashboard
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+    -
+        servername: local.layout_builder_example.com
+        documentroot: '{{ drupal_core_path }}'
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+mysql_databases:
+    -
+        name: drupal
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: layoutbuilder
+        encoding: utf8
+        collation: utf8_general_ci
+mysql_users:
+    -
+        name: drupal
+        host: '%'
+        password: drupal
+        priv: 'drupal%.*:ALL'
+    -
+        name: layoutbuilder
+        host: '%'
+        password: drupal
+        priv: 'drupal*:ALL'
+drupal_install_site: false
+configure_drush_aliases: false
+nodejs_version: 6.x
+nodejs_npm_global_packages:
+    -
+        name: bower
+    -
+        name: gulp-cli
+    -
+        name: yarn
+nodejs_install_npm_user: '{{ drupalvm_user }}'
+npm_config_prefix: '/home/{{ drupalvm_user }}/.npm-global'
+installed_extras:
+    - adminer
+    - selenium
+    - drush
+    - mailhog
+    - memcached
+    - nodejs
+    - solr
+    - xdebug
+php_version: '7.1'
+php_packages_extra:
+    - 'php{{ php_version }}-bz2'
+    - 'php{{ php_version }}-imagick'
+    - imagemagick
+php_xdebug_version: 2.5.0
+php_xdebug_default_enable: 0
+php_xdebug_coverage_enable: 0
+php_xdebug_cli_disable: 'yes'
+php_xdebug_remote_enable: 1
+php_xdebug_remote_connect_back: 1
+php_xdebug_idekey: PHPSTORM
+php_xdebug_max_nesting_level: 256
+php_xdebug_remote_port: '9000'
+php_memory_limit: 512M
+solr_version: 4.5.1
+post_provision_scripts:
+    - ../../../acquia/blt/scripts/drupal-vm/configure-solr.sh
+    - ../../../acquia/blt/scripts/drupal-vm/post-provision.php

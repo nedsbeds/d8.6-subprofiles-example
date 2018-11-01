@@ -1,0 +1,14 @@
+uuid: 644591f1-3ae5-4b17-9758-899a795478bb
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - lightning_core
+third_party_settings:
+  lightning_core:
+    internal: true
+id: block_content.token
+label: Token
+targetEntityType: block_content
+cache: true
