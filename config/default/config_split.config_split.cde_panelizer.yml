@@ -6,11 +6,12 @@ id: cde_panelizer
 label: cde_panelizer
 description: ''
 folder: ../config/profiles/cde_panelizer
-module: {  }
+module:
+  profile_config_overrider: 0
+  cde_panelizer: 1000
 theme: {  }
 blacklist: {  }
-graylist:
-  - core.extension
+graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0

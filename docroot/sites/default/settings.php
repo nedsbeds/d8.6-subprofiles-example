@@ -771,6 +771,6 @@ $settings['entity_update_batch_size'] = 50;
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 
 // Automatically generated include for settings managed by ddev.
-if (file_exists($app_root . '/' . $site_path . '/settings.ddev.php')) {
-  include $app_root . '/' . $site_path . '/settings.ddev.php';
-}
+//if (file_exists($app_root . '/' . $site_path . '/settings.ddev.php')) {
+//  include $app_root . '/' . $site_path . '/settings.ddev.php';
+//}

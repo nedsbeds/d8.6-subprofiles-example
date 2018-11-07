@@ -767,6 +767,5 @@ $settings['entity_update_batch_size'] = 50;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
-$settings['install_profile'] = 'cde_layout_builder';
 
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";

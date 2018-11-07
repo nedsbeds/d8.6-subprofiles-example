@@ -79,6 +79,7 @@ module:
   panels: 0
   panels_ipe: 0
   path: 0
+  profile_config_overrider: 0
   quickedit: 0
   rdf: 0
   schemata: 0
@@ -107,6 +108,7 @@ module:
   pathauto: 1
   views: 10
   cde_base: 1000
+  cde_layout_builder: 1000
   lightning: 1000
 theme:
   stable: 0

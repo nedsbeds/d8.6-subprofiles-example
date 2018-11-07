@@ -3,16 +3,10 @@
 namespace Drupal\profile_config_overrider\Plugin\ConfigFilter;
 
 use Drupal\config_filter\Plugin\ConfigFilterBase;
-use Drupal\Core\Config\ConfigManagerInterface;
-use Drupal\Core\Config\DatabaseStorage;
-use Drupal\Core\Config\FileStorage;
-use Drupal\Core\Config\ImmutableConfig;
-use Drupal\Core\Config\StorageInterface;
-use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Component\PhpStorage\FileStorage as PhpFileStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Extension\ProfileExtensionList;
 
 /**
  * Provides a SplitFilter.
@@ -28,6 +22,18 @@ class ProfileOverriderFilter extends ConfigFilterBase implements ContainerFactor
   use DependencySerializationTrait;
 
   /**
+   * @var ProfileExtensionList
+   */
+  private $profileExtensionList;
+
+  private $syncProfile;
+
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, $profileExtensionList) {
+    $this->profileExtensionList = $profileExtensionList;
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+
+  /**
    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
    * @param array $configuration
    * @param string $plugin_id
@@ -36,11 +42,11 @@ class ProfileOverriderFilter extends ConfigFilterBase implements ContainerFactor
    * @return \Drupal\Core\Plugin\ContainerFactoryPluginInterface|\Drupal\profile_config_overrider\Plugin\ConfigFilter\ProfileOverriderFilter
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-
     return new static(
       [],
       $plugin_id,
-      $plugin_definition
+      $plugin_definition,
+      $container->get('extension.list.profile')
     );
   }
 
@@ -49,10 +55,29 @@ class ProfileOverriderFilter extends ConfigFilterBase implements ContainerFactor
    */
   public function filterReadMultiple(array $names, array $data) {
 
-    //override the sync value for the profile which config split is not
+    $this->syncProfile = $data['core.extension']['profile'];
 
+    //override the sync value for the profile which config split is not
     $data['core.extension']['module'][\Drupal::installProfile()] = 1000;
     $data['core.extension']['profile'] = \Drupal::installProfile();
+    return $data;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function filterWrite($name, array $data) {
+
+    //make sure the core.extension details match the base profile
+    if ($name == 'core.extension') {
+      print_r($data);
+      $profileInfo = $this->profileExtensionList->getExtensionInfo(\Drupal::installProfile());
+
+      if ($profileInfo['base profile'] != 'lightning') {
+        $data['profile'] = $profileInfo['base profile'];
+      }
+    }
+
     return $data;
   }
 }
