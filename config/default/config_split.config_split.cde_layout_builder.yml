@@ -8,7 +8,7 @@ description: ''
 folder: ../config/profiles/cde_layout_builder
 module:
   profile_config_overrider: 0
-  cde_panelizer: 1000
+  cde_layout_builder: 1000
 theme: {  }
 blacklist: {  }
 graylist: {  }

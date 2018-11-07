@@ -108,7 +108,6 @@ module:
   pathauto: 1
   views: 10
   cde_base: 1000
-  cde_layout_builder: 1000
   lightning: 1000
 theme:
   stable: 0
