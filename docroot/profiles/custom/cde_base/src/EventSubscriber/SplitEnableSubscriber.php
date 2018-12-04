@@ -22,22 +22,9 @@ class SplitEnableSubscriber implements EventSubscriberInterface {
 
     global $config;
 
-    if (isset($_SERVER['argv'])) {
-      $input = new ArgvInput($_SERVER['argv']);
-    } else {
-      //we aren't on the CLI so fake it!
-      $input = new ArgvInput([]);
-    }
-
-    $repo_root = dirname(DRUPAL_ROOT);
     $split_filename_prefix = 'config_split.config_split';
 
-    //get hold of the BLT config
-    $config_initializer = new ConfigInitializer($repo_root, $input);
-    $blt_config = $config_initializer->initialize();
-
-
-    $active_profile = $blt_config->get('project.profile.name');
+    $active_profile = \Drupal::installProfile();
     $config["$split_filename_prefix.$active_profile"]['status'] = TRUE;
   }
 

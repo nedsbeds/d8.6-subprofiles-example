@@ -3,7 +3,6 @@
 namespace Drupal\profile_config_overrider\Plugin\ConfigFilter;
 
 use Drupal\config_filter\Plugin\ConfigFilterBase;
-use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Extension\ProfileExtensionList;
@@ -13,33 +12,40 @@ use Drupal\Core\Extension\ProfileExtensionList;
  *
  * @ConfigFilter(
  *   id = "profile_config_overrider",
- *   label = "Profile Config Overrider",
+ *   label = @Translation("Profile Config Overrider"),
  *   storages = {"config.storage.sync"},
  * )
  */
 class ProfileOverriderFilter extends ConfigFilterBase implements ContainerFactoryPluginInterface {
 
-  use DependencySerializationTrait;
-
   /**
-   * @var ProfileExtensionList
+   *
+   * @var ProfileExtensionList Service that allows us to obtain the profile name and parent
    */
   private $profileExtensionList;
 
-  private $syncProfile;
-
+  /**
+   * ProfileOverriderFilter constructor.
+   *
+   * @param array $configuration
+   * @param $plugin_id
+   * @param $plugin_definition
+   * @param $profileExtensionList
+   */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, $profileExtensionList) {
-    $this->profileExtensionList = $profileExtensionList;
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->profileExtensionList = $profileExtensionList;
   }
 
   /**
+   * Function for dependency injection
+   *
    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
    * @param array $configuration
    * @param string $plugin_id
    * @param mixed $plugin_definition
    *
-   * @return \Drupal\Core\Plugin\ContainerFactoryPluginInterface|\Drupal\profile_config_overrider\Plugin\ConfigFilter\ProfileOverriderFilter
+   * @return \Drupal\profile_config_overrider\Plugin\ConfigFilter\ProfileOverriderFilter
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
@@ -51,29 +57,31 @@ class ProfileOverriderFilter extends ConfigFilterBase implements ContainerFactor
   }
 
   /**
+   * Alter the sync storage profile when importing
    * {@inheritdoc}
    */
   public function filterReadMultiple(array $names, array $data) {
-
-    $this->syncProfile = $data['core.extension']['profile'];
-
-    //override the sync value for the profile which config split is not
-    $data['core.extension']['module'][\Drupal::installProfile()] = 1000;
-    $data['core.extension']['profile'] = \Drupal::installProfile();
+    //The DB will contain our installed profile name. Override the value read
+    // from the sync directory with the currently installed profile so they match
+    if (in_array('core.extension', $names)) {
+      $data['core.extension']['module'][\Drupal::installProfile()] = 1000;
+      $data['core.extension']['profile'] = \Drupal::installProfile();
+    }
     return $data;
   }
 
   /**
+   * Alter the active storage profile when exporting
    * {@inheritdoc}
    */
   public function filterWrite($name, array $data) {
 
-    //make sure the core.extension details match the base profile
+    //overwrite the core.extension details to match the base profile since this value
+    //will be in the sync directory and we do not want to alter it
     if ($name == 'core.extension') {
-      print_r($data);
       $profileInfo = $this->profileExtensionList->getExtensionInfo(\Drupal::installProfile());
 
-      if ($profileInfo['base profile'] != 'lightning') {
+      if (isset($profileInfo['base profile']) && $profileInfo['base profile'] != 'lightning') {
         $data['profile'] = $profileInfo['base profile'];
       }
     }
